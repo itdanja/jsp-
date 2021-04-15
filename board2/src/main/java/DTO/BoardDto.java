@@ -10,8 +10,9 @@ public class BoardDto {
 	private String Date; 	// 게시물 작성일 
 	private int Available; 	// 게시물 표시여부 
 	private String File;		// 게시물 첨부 파일
+	private int count;		// 게시물 조회수 
 	
-	
+	// get , set 메소드 
 	public int getID() {
 		return ID;
 	}
@@ -54,6 +55,15 @@ public class BoardDto {
 	public void setFile(String file) {
 		File = file;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
+
+	
 	
 	
 

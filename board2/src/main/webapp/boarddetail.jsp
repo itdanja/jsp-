@@ -34,7 +34,7 @@
 			
 				<thead>
 					<tr>
-						<th colspan="3" style="background-color: #eeeeee; text-align:center;"  > 게시물번호 </th>
+						<th colspan="3" style="background-color: #eeeeee; text-align:center;"  > 게시물 <br> 조회수 : <%=dto.getCount() %> </th>
 					</tr>
 				</thead>
 				<tbody>

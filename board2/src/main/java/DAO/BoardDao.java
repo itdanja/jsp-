@@ -75,7 +75,7 @@ public class BoardDao {
 	// 게시물 등록 메소드
 	public int write( BoardDto dto ) {
 		
-		String SQL = "insert into Board values(?,?,?,?,?,?,?)";
+		String SQL = "insert into Board values(?,?,?,?,?,?,?,?)";
 		try {
 			
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
@@ -86,6 +86,7 @@ public class BoardDao {
 			pstmt.setString(5, getDate() );	// 게시물 등록 메소드 호출 
 			pstmt.setInt(6, dto.getAvailable() ) ;
 			pstmt.setString(7, dto.getFile() );
+			pstmt.setInt(8, 0 );
 
 			pstmt.executeUpdate();
 			return 1 ;
@@ -134,6 +135,7 @@ public class BoardDao {
 	public BoardDto getboard( int id) {
 		
 		try {
+			
 			String SQL = "select * from board where board_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, id);
@@ -142,6 +144,8 @@ public class BoardDao {
 			BoardDto dto = new BoardDto();
 			
 			if( rs.next() ) { // 결과 갯수만큼 반복
+				
+				int count = rs.getInt(8) + 1 ; 
 		
 				dto.setID( rs.getInt(1));
 				dto.setTitle( rs.getString(2));
@@ -150,7 +154,17 @@ public class BoardDao {
 				dto.setDate( rs.getString(5));
 				dto.setAvailable( rs.getInt(6));
 				dto.setFile( rs.getString(7));
-			
+				dto.setCount( count );
+				
+				//////////////////////// 조회수 +1 씩 증가 /////////////////////////////		
+				SQL = "update board set board_count = ? where board_id = ?";
+				pstmt = conn.prepareStatement(SQL);
+				pstmt.setInt(1, count);
+				pstmt.setInt(2, id);
+				
+				
+				pstmt.executeUpdate();
+				
 				return dto;
 			}
 		}
@@ -162,16 +176,41 @@ public class BoardDao {
 	
 	
 	
-	// 게시물 삭제 메소드 ?? 일반사용자 -> 삭제[ 비활성화 = 0  ] 
+//	// 게시물 삭제 메소드 ?? 일반사용자 -> 삭제[ 비활성화 = 0  ] 
+//	public int deleteboard( int id) { 
+//		
+//		try {
+//			String SQL = "update board set board_available = 0 where board_id = ? ";
+//			PreparedStatement pstmt = conn.prepareStatement(SQL);
+//			pstmt.setInt(1, id);
+//			
+//			pstmt.executeUpdate();
+//		
+//			return 1;
+//		}
+//		catch (Exception e) {
+//			// TODO: handle exception
+//		}	
+//		return -1;
+//	}
+	
+	
+	// 게시물 삭제 메소드 ?? 일반사용자 -> 삭제 했을때 => 삭제된 번호 부터 뒤로 -1 차감
 	public int deleteboard( int id) { 
 		
 		try {
-			String SQL = "update board set board_available = 0 where board_id = ? ";
+			String SQL = "delete from board where board_id = ? ";
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, id);
-			
+			pstmt.setInt(1, id);	
 			pstmt.executeUpdate();
-		
+			////////////////////// 삭제후 //////////////////////////////
+			
+			SQL = "UPDATE board set board_id = board_id-1 where board_id > ?";
+					// 삭제되는 게시물번호 보다 큰 번호는 -1씩 감소
+			pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+			
 			return 1;
 		}
 		catch (Exception e) {
@@ -179,7 +218,7 @@ public class BoardDao {
 		}	
 		return -1;
 	}
-
+	
 	//게시물 수정 메소드 
 	public int updateboard( String title , String contents , String file ,  int id) { 
 		
@@ -199,6 +238,42 @@ public class BoardDao {
 			// TODO: handle exception
 		}	
 		return -1;
+	}
+	
+	// 게시물 검색 조회 메소드 
+	public ArrayList<BoardDto> getboardsearch( String key , String keyword) {
+		
+		ArrayList<BoardDto> list = new ArrayList<BoardDto>();
+
+		try {
+			
+//			String SQL = "select * from board where key = keyword";
+			String SQL = "select * from board where "+key+" like '%"+keyword+"%'";
+			
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+	
+			rs = pstmt.executeQuery();
+			
+			while( rs.next() ) { // 결과 갯수만큼 반복
+			
+				BoardDto dto = new BoardDto();
+				
+				dto.setID( rs.getInt(1));
+				dto.setTitle( rs.getString(2));
+				dto.setContents( rs.getString(3));
+				dto.setUserID( rs.getString(4));
+				dto.setDate( rs.getString(5));
+				dto.setAvailable( rs.getInt(6));
+				dto.setFile( rs.getString(7));
+				
+				list.add(dto);
+			}
+			return list;
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}	
+		return null;
 	}
 
 

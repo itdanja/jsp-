@@ -31,10 +31,23 @@
 				
 				<tbody> 
 				<%
-					
+					request.setCharacterEncoding("EUC-KR"); // 한글 인코딩 
+					String key = request.getParameter("key");
+					String keyword = request.getParameter("keyword");
+				
 					BoardDao dao = BoardDao.getinstance();
-					ArrayList<BoardDto> list =dao.getboardlist();
 					
+					ArrayList<BoardDto> list = new ArrayList<>();
+					
+					// 검색이 없는경우
+					if( key == null || keyword ==null  ){	
+						list =dao.getboardlist(); // 모든 조회 메소드 
+					}
+					else{ // 검색이 있는경우 
+						list = dao.getboardsearch( key , keyword); // 검색 조회 메소드
+					}
+					
+					// 반복문 
 					for( int i=0 ; i<list.size() ; i++ ){
 						BoardDto dto =list.get(i);
 				%>
@@ -44,15 +57,38 @@
 						<td> <%=dto.getUserID() %> </td>
 						<td> <%=dto.getDate() %> </td>
 					</tr>
-					
 				<%
 					}
 				%>
-					
-					
 				</tbody>
 				
 			</table>
+			
+			<form action="board.jsp" method="post" >
+						<!-- 게시판 목록  -->
+				<table style="margin: 0 auto;">
+					<tr>
+						<td> 
+							<select name="key" class="form-control">
+								<option value="board_title"> 제목 </option> <!-- value="필드명" -->
+								<option value="board_contents"> 내용 </option>
+								<option value="board_userid"> 작성자 </option>
+							</select>
+						</td>
+						
+						<td>
+							<input type="text" name="keyword" value="" size="20" class="form-control" placeholder=" 검색어 입력 ">
+															<!-- 필드 값  -->
+						</td>
+						
+						<td>
+							<input type="submit" value="검색" class="btn btn-default">
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+			
 			<a href="boardwrite.jsp" class="btn btn-primary pull-right" >글작성</a>
 		</div>
 	</div>
