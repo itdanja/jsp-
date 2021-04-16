@@ -135,7 +135,6 @@ public class BoardDao {
 	public BoardDto getboard( int id) {
 		
 		try {
-			
 			String SQL = "select * from board where board_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
 			pstmt.setInt(1, id);
@@ -161,7 +160,6 @@ public class BoardDao {
 				pstmt = conn.prepareStatement(SQL);
 				pstmt.setInt(1, count);
 				pstmt.setInt(2, id);
-				
 				
 				pstmt.executeUpdate();
 				

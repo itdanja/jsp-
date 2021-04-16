@@ -17,7 +17,7 @@
 	<!-- 부트스트랩 테이블  -->
 	<div class="container">
 		<div>
-			<form action="boardwritecontroller.jsp" method="post">
+			<form action="boardwritecontroller.jsp" method="post" enctype="multipart/form-data" >
 			
 				<table class="table table-striped" style="text-align: center; border: 1px">
 					<thead>

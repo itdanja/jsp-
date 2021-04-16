@@ -1,3 +1,5 @@
+<%@page import="com.oreilly.servlet.multipart.DefaultFileRenamePolicy"%>
+<%@page import="com.oreilly.servlet.MultipartRequest"%>
 <%@page import="java.io.PrintWriter"%>
 <%@page import="DAO.BoardDao"%>
 <%@page import="DTO.BoardDto"%>
@@ -13,12 +15,25 @@
 
 	
 	<%
-		request.getParameter("EUC-KR");
+	
+		// 1. 업로드 파일은 서버에 저장 
+		String realFolder = "C:/Users/User/git/jsp/board2/src/main/webapp/upload";
 		
-		int id = Integer.parseInt( request.getParameter("id") );
-		String title =  request.getParameter("title") ;
-		String contents =  request.getParameter("contents") ;
-		String file =  request.getParameter("file") ;
+		// MultipartRequest : cos 라이브러리에서 제공 
+		MultipartRequest multi = new MultipartRequest( request , realFolder , 1024*1024*10 , "UTF-8" , new DefaultFileRenamePolicy() );
+													// 요청방식 ,   , 저장위치 , "파일최대용량" , "인코딩" , "보안 : "
+																									// DefaultFileRenamePolicy() : 업로드시 중복된 파일명 제거 
+		request.setCharacterEncoding("EUC-KR"); // 요청할때 데이터를 한글로 인코딩
+	
+		// 첨부파일 사용시 enctype : 타입으로 변경 
+		int id = Integer.parseInt( multi.getParameter("id") );
+		String title =  multi.getParameter("title") ;
+		String contents =  multi.getParameter("contents") ;
+		String file =  multi.getFilesystemName("file");
+		
+		if( file == null ){
+			file = multi.getParameter("file2"); // 기존 파일로 다시 넣어주기
+		}
 	
 		BoardDao dao = BoardDao.getinstance();
 		

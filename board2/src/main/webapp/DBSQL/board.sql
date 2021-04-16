@@ -10,5 +10,12 @@ create table board(
     
 );
 
+create table reply(
 
+	reply_num int primary key, 
+    reply_boardid int,
+    reply_userid varchar(50) , 
+    reply_contents varchar(1000)
+    
+);
 

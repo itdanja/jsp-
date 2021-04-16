@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@page import="DTO.BoardDto"%>
 <%@page import="DAO.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
@@ -24,7 +25,7 @@
 	<!-- 부트스트랩 테이블  -->
 	<div class="container">
 		<div>
-			<form action="boardmodifycontroller.jsp?id=<%=id %>" method="post">
+			<form action="boardmodifycontroller.jsp?id=<%=id %>" method="post" enctype="multipart/form-data">
 			
 				<table class="table table-striped" style="text-align: center; border: 1px">
 					<thead>
@@ -46,8 +47,8 @@
 					
 				</table>
 					<input type="file" name="file">
+					<input type="hidden" name="file2" value="<%=dto.getFile()%>">
 					<input type="submit" value="글 수정" class="btn btn-primary pull-right">
-					
 			</form>
 		</div>
 	</div>
