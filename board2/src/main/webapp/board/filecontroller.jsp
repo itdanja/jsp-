@@ -2,46 +2,46 @@
 <%@page import="java.io.FileInputStream"%>
 <%@page import="java.io.BufferedInputStream"%>
 <%@page import="java.io.File"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+
 <title>Insert title here</title>
 </head>
 <body>
-
+<%@include file="/menu.jsp" %>
 
 	<%
-		// 1. ÆÄÀÏÀÌ¸§ °¡Á®¿À±â 
+		// 1. íŒŒì¼ì´ë¦„ ê°€ì ¸ì˜¤ê¸° 
 		String filename = request.getParameter("file");
 	
-		// 3. ÇØ´çÆÄÀÏ ÀÚ¹Ù·Î °¡Á®¿À±â 
+		// 3. í•´ë‹¹íŒŒì¼ ìë°”ë¡œ ê°€ì ¸ì˜¤ê¸° 
 		File file = new File( "C:/Users/User/git/jsp/board2/src/main/webapp/upload/"+filename);
 		
-		// 4. Ã·ºÎÆÄÀÏ Çü½ÄÀ¸·Î ¿­±â [ ºê¶ó¿ìÀú ¸¶´Ù ´Ù¸§ ]
+		// 4. ì²¨ë¶€íŒŒì¼ í˜•ì‹ìœ¼ë¡œ ì—´ê¸° [ ë¸Œë¼ìš°ì € ë§ˆë‹¤ ë‹¤ë¦„ ]
 		response.setHeader("Content-Disposition", "attachment;filename="+filename+";");
-						   //  Çü½Ä ,  Ã·ºÎÆÄÀÏ ÀÌ¸§
+						   //  í˜•ì‹ ,  ì²¨ë¶€íŒŒì¼ ì´ë¦„
 						   
-		// 5. ÀÔÃâ·Â ½ºÆ®¸² [ ¹ÙÀÌÆ® ´ÜÀ§ ]
+		// 5. ì…ì¶œë ¥ ìŠ¤íŠ¸ë¦¼ [ ë°”ì´íŠ¸ ë‹¨ìœ„ ]
 		byte[] b = new byte[ (int)file.length() ];
-							// ÆÄÀÏÀÇÅ©±â¸¸Å­ ¹ÙÀÌÆ®¹è¿­ »ı¼º
-		// 6. Ãâ·Â ½ºÆ®¸²À¸·Î ³»º¸³»±â 
+							// íŒŒì¼ì˜í¬ê¸°ë§Œí¼ ë°”ì´íŠ¸ë°°ì—´ ìƒì„±
+		// 6. ì¶œë ¥ ìŠ¤íŠ¸ë¦¼ìœ¼ë¡œ ë‚´ë³´ë‚´ê¸° 
 		if( file.isFile() ){
 			
-			// ÀÔ·Â½ºÆ®¸² 
+			// ì…ë ¥ìŠ¤íŠ¸ë¦¼ 
 			BufferedInputStream fin = new BufferedInputStream( new FileInputStream(file));
-			// Ãâ·Â½ºÆ®¸² 
+			// ì¶œë ¥ìŠ¤íŠ¸ë¦¼ 
 			BufferedOutputStream fout = new BufferedOutputStream( response.getOutputStream() );
 			
 			int count ; 
-			while(  (count=fin.read(b)) != -1 ){   // ÀÔ·Â½ºÆ®¸²¿¡ ¹ÙÀÌÆ®°¡ ¾øÀ»¶§ ±îÁö ÀĞ¾î¿À±â 
+			while(  (count=fin.read(b)) != -1 ){   // ì…ë ¥ìŠ¤íŠ¸ë¦¼ì— ë°”ì´íŠ¸ê°€ ì—†ì„ë•Œ ê¹Œì§€ ì½ì–´ì˜¤ê¸° 
 				fout.write( b , 0 , count );
 			}
 		
-			fout.close();	// Ãâ·Â ½ºÆ®¸² Á¾·á 
-			fin.close();	// ÀÔ·Â ½ºÆ®¸² Á¾·á 
+			fout.close();	// ì¶œë ¥ ìŠ¤íŠ¸ë¦¼ ì¢…ë£Œ 
+			fin.close();	// ì…ë ¥ ìŠ¤íŠ¸ë¦¼ ì¢…ë£Œ 
 			
 			
 			
@@ -59,7 +59,7 @@
 		
 	%>
 
-
+<%@include file="/footer.jsp" %>
 
 </body>
 </html>

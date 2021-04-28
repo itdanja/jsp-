@@ -1,12 +1,12 @@
 <%@page import="java.io.PrintWriter"%>
 <%@page import="DAO.BoardDao"%>
 <%@page import="DTO.BoardDto"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -21,14 +21,14 @@
 		if( result == 1 ){  
 			PrintWriter script =response.getWriter();
 			script.println("<script>");
-			script.println("alert('±Û »èÁ¦ µÇ¾ú½À´Ï´Ù .');");
+			script.println("alert('ê¸€ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤ .');");
 			script.println("location.href ='board.jsp'");
 			script.println("</script>");
 		}
 		else{	
 			PrintWriter script =response.getWriter();
 			script.println("<script>");
-			script.println("alert('±Û »èÁ¦ ¿À·ù [ °ü¸®ÀÚ¿¡°Ô ¹®ÀÇ ] .');");
+			script.println("alert('ê¸€ ì‚­ì œ ì˜¤ë¥˜ [ ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜ ] .');");
 			script.println("location.href ='board.jsp'");
 			script.println("</script>");
 		}

@@ -98,21 +98,18 @@ public class BoardDao {
 	}
 	
 	// 게시물 모든 조회 메소드 
-	public ArrayList<BoardDto> getboardlist() {
+	public ArrayList<BoardDto> getboardlist( int pagenumber ) {
 		
 		ArrayList<BoardDto> list = new ArrayList<BoardDto>();
-
 		try {
-			
-			String SQL = "select * from board where board_available = 1";
+			String SQL = "select * from board where board_id< ? ORDER BY board_id DESC LIMIT 10";
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1,  getnext() - (pagenumber-1)*10 );
 			
 			rs = pstmt.executeQuery();
 			
 			while( rs.next() ) { // 결과 갯수만큼 반복
-			
 				BoardDto dto = new BoardDto();
-				
 				dto.setID( rs.getInt(1));
 				dto.setTitle( rs.getString(2));
 				dto.setContents( rs.getString(3));
@@ -130,7 +127,29 @@ public class BoardDao {
 		}	
 		return null;
 	}
+	// 다음 페이지 여부 확인 메소드 
+	public boolean nextpage( int pagenumber) {
+		String SQL = "SELECT * FROM board where board_id < ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt( 1 ,  getnext() - (pagenumber-1) * 10   );
+								// 게시물 마지막번호 = 21
+								// 예) 21  -	(   1-1 ) * 10 = 21
+								// 예) 21  -	(   2-1 ) * 10 = 11
+								// 예) 21  - (   3-1 ) * 10 = 1
+								// 마지막번호 - ( 현재페이지-1 ) * 페이지당 게시물수 
+			rs = pstmt.executeQuery();
+			if( rs.next() ) {
+				return true;
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
+	}
 	
+
 	// 게시물 개별 조회 메소드 
 	public BoardDto getboard( int id) {
 		

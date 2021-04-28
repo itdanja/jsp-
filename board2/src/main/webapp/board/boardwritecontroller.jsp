@@ -3,43 +3,42 @@
 <%@page import="java.io.PrintWriter"%>
 <%@page import="DAO.BoardDao"%>
 <%@page import="DTO.BoardDto"%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+
 <title>Insert title here</title>
 </head>
 <body>
-
+<%@include file="/menu.jsp" %>
 	
 	<%
-
-		// 1. ¾÷·Îµå ÆÄÀÏÀº ¼­¹ö¿¡ ÀúÀå 
+		// 1. ì—…ë¡œë“œ íŒŒì¼ì€ ì„œë²„ì— ì €ì¥ 
 		String realFolder = "C:/Users/User/git/jsp/board2/src/main/webapp/upload";
 		
-		// MultipartRequest : cos ¶óÀÌºê·¯¸®¿¡¼­ Á¦°ø 
+		// MultipartRequest : cos ë¼ì´ë¸ŒëŸ¬ë¦¬ì—ì„œ ì œê³µ 
 		MultipartRequest multi = new MultipartRequest( request , realFolder , 1024*1024*10 , "UTF-8" , new DefaultFileRenamePolicy() );
-													// ¿äÃ»¹æ½Ä ,   , ÀúÀåÀ§Ä¡ , "ÆÄÀÏÃÖ´ë¿ë·®" , "ÀÎÄÚµù" , "º¸¾È : "
-																									// DefaultFileRenamePolicy() : ¾÷·Îµå½Ã Áßº¹µÈ ÆÄÀÏ¸í Á¦°Å 
-		request.setCharacterEncoding("EUC-KR"); // ¿äÃ»ÇÒ¶§ µ¥ÀÌÅÍ¸¦ ÇÑ±Û·Î ÀÎÄÚµù
+													// ìš”ì²­ë°©ì‹ ,   , ì €ì¥ìœ„ì¹˜ , "íŒŒì¼ìµœëŒ€ìš©ëŸ‰" , "ì¸ì½”ë”©" , "ë³´ì•ˆ : "
+																									// DefaultFileRenamePolicy() : ì—…ë¡œë“œì‹œ ì¤‘ë³µëœ íŒŒì¼ëª… ì œê±° 
+		request.setCharacterEncoding("UTF-8"); // ìš”ì²­í• ë•Œ ë°ì´í„°ë¥¼ í•œê¸€ë¡œ ì¸ì½”ë”©
 	
-		// Ã·ºÎÆÄÀÏ »ç¿ë½Ã enctype : Å¸ÀÔÀ¸·Î º¯°æ 
+		// ì²¨ë¶€íŒŒì¼ ì‚¬ìš©ì‹œ enctype : íƒ€ì…ìœ¼ë¡œ ë³€ê²½ 
 		
-		// 2. ÆÄÀÏ¸íÀº DB ÀúÀå 
+		// 2. íŒŒì¼ëª…ì€ DB ì €ì¥ 
 		String title = multi.getParameter("title"); // input name 
 		String contents = multi.getParameter("contents"); // input name 
 		String file = multi.getFilesystemName("file");
-					// filesystemName : Ã·ºÎÆÄÀÏ¸í
+					// filesystemName : ì²¨ë¶€íŒŒì¼ëª…
 		
 		BoardDto boardDto = new BoardDto();
 	
-		// id »ı·«
+		// id ìƒëµ
 		boardDto.setTitle(title);
 		boardDto.setContents(contents);
-		boardDto.setUserID("À¯Àç¼®");
-		//date »ı·«
+		boardDto.setUserID(user);
+		//date ìƒëµ
 		boardDto.setAvailable(1);
 		boardDto.setFile(file);
 		
@@ -52,7 +51,7 @@
 			
 			PrintWriter script =response.getWriter();
 			script.println("<script>");
-			script.println("alert('±Û µî·ÏÀÌ µÇ¾ú½À´Ï´Ù .');");
+			script.println("alert('ê¸€ ë“±ë¡ì´ ë˜ì—ˆìŠµë‹ˆë‹¤ .');");
 			script.println("location.href ='board.jsp'");
 			script.println("</script>");
 		}
@@ -60,7 +59,7 @@
 			
 			PrintWriter script =response.getWriter();
 			script.println("<script>");
-			script.println("alert('±Û µî·Ï ¿À·ù [ °ü¸®ÀÚ¿¡°Ô ¹®ÀÇ ] .');");
+			script.println("alert('ê¸€ ë“±ë¡ ì˜¤ë¥˜ [ ê´€ë¦¬ìì—ê²Œ ë¬¸ì˜ ] .');");
 			script.println("location.href ='board.jsp'");
 			script.println("</script>");
 		}
@@ -68,7 +67,7 @@
 	
 	%>
 
-
+<%@include file="/footer.jsp" %>
 
 	
 
